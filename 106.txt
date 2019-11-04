@@ -1,0 +1,70 @@
+
+
+1
+ drop procedure if exists pa_generar_dos_aleatorios;
+
+delimiter //
+create procedure pa_generar_dos_aleatorios(
+  out valor1 int,
+  out valor2 int)
+begin
+  set valor1=0;
+  set valor2=0;
+  while valor1=valor2 do
+    set valor1=rand()*10;
+    set valor2=rand()*10;
+  end while;
+end //
+delimiter ;
+
+call pa_generar_dos_aleatorios(@v1,@v2);
+
+select @v1,@v2;   
+
+
+  set valor1=0;
+  set valor2=0;
+
+    set valor1=rand()*10;
+    set valor2=rand()*10;
+
+2 
+
+delimiter //
+create procedure pa_generar_dos_aleatorios(
+  out valor1 int,
+  out valor2 int)
+begin
+  repeat
+    set valor1=rand()*10;
+    set valor2=rand()*10;
+  until valor1<>valor2  
+  end repeat;
+end //
+delimiter ;
+
+call pa_generar_dos_aleatorios(@v1,@v2);
+
+select @v1,@v2;  
+3
+
+drop procedure if exists pa_generar_dos_aleatorios;
+
+delimiter //
+create procedure pa_generar_dos_aleatorios(
+  out valor1 int,
+  out valor2 int)
+begin
+  etiqueta1:loop
+    set valor1=rand()*10;
+    set valor2=rand()*10;
+    if valor1<>valor2 then
+      leave etiqueta1;
+    end if;
+  end loop;
+end //
+delimiter ;
+
+call pa_generar_dos_aleatorios(@v1,@v2);
+
+select @v1,@v2;  

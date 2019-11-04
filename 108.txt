@@ -1,0 +1,28 @@
+SET @@session.max_sp_recursion_depth = 10; 
+
+drop procedure if exists pa_factorial;
+
+delimiter //
+create procedure pa_factorial(
+  in valor int,
+  out resu int)
+begin
+  if valor=0 then
+    set resu=1;
+  else
+    call pa_factorial(valor-1,resu);
+    set resu=valor*resu;
+  end if;
+end //  
+delimiter ;
+
+call pa_factorial(5,@resu);
+select @resu;
+
+
+    call pa_factorial(valor-1,resu);
+
+SET @@session.max_sp_recursion_depth = 10; 
+
+
+SET @@GLOBAL.max_sp_recursion_depth = 5;

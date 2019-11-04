@@ -1,0 +1,62 @@
+drop table if exists usuarios;
+drop table if exists clavesanteriores;
+
+
+create table usuarios(
+ nombre varchar(30),
+ clave varchar(30),
+ primary key (nombre)
+);
+
+create table clavesanteriores(
+ numero int auto_increment,
+ nombre varchar(30),
+ clave varchar(30),
+ primary key (numero)
+);
+
+
+drop trigger if exists before_usuarios_update;
+Creamos el trigger 'before_usuarios_update':
+
+delimiter //
+create trigger before_usuarios_update
+  before update
+  on usuarios
+  for each row
+begin
+  insert into clavesanteriores(nombre, clave) values (old.nombre, old.clave); 
+end //
+delimiter ;
+
+  before update
+  on usuarios
+
+old.nombre y old.clave
+new.nombre y new.clave
+Ejecutemos ahora un insert en la tabla 'usuarios':
+
+insert into usuarios(nombre,clave) values ('marcos','123abc');
+
+update usuarios set clave='999zzz' where nombre='marcos';
+
+
+select * from clavesanteriores;
+Podemos comprobar que tenemos ahora una fila que contiene los datos:
+
+nombre: marcos
+clave: 123abc
+Si volvemos a cambiar la clave del usuario 'marcos':
+
+update usuarios set clave='123456' where nombre='marcos';
+Listamos nuevamente la tabla 'clavesanteriores':
+
+select * from clavesanteriores;
+Podemos comprobar que tenemos ahora dos filas que contiene los datos:
+
+nombre: marcos
+clave: 123abc
+nombre: marcos
+clave: 999zzz
+
+select * from usuarios;
